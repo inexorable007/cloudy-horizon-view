@@ -1,5 +1,5 @@
 
-const API_KEY = "YOUR_API_KEY"; // Replace with your OpenWeatherMap API key
+const API_KEY = "72a79b2f89a1fb43ac4babe979439b99"; // Replace with your OpenWeatherMap API key
 
 export interface WeatherData {
   current: {
