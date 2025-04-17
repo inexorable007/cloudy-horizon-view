@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import SearchBar from "@/components/SearchBar";
 import WeatherCard from "@/components/WeatherCard";
@@ -7,33 +6,16 @@ import Forecast from "@/components/Forecast";
 import Clock from "@/components/Clock";
 import { Globe } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { getWeatherData, WeatherData } from "@/utils/weatherApi";
 
 const Index = () => {
-  const [weatherData, setWeatherData] = useState<any>(null);
+  const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
   const { toast } = useToast();
 
   const handleSearch = async (query: string) => {
     try {
-      // Simulate weather data - In a real app, this would be an API call
-      const mockWeatherData = {
-        current: {
-          temperature: 22,
-          condition: "Sunny",
-          humidity: 65,
-          windSpeed: 12,
-          feelsLike: 24,
-          uvIndex: 5
-        },
-        forecast: [
-          { date: "2025-04-18", temperature: 22, condition: "Sunny" },
-          { date: "2025-04-19", temperature: 20, condition: "Clouds" },
-          { date: "2025-04-20", temperature: 19, condition: "Rain" },
-          { date: "2025-04-21", temperature: 21, condition: "Clouds" },
-          { date: "2025-04-22", temperature: 23, condition: "Sunny" },
-        ]
-      };
-      
-      setWeatherData(mockWeatherData);
+      const data = await getWeatherData(query);
+      setWeatherData(data);
       toast({
         title: "Location updated",
         description: `Weather information for ${query}`,
@@ -42,7 +24,7 @@ const Index = () => {
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Failed to fetch weather data. Please try again.",
+        description: "Failed to fetch weather data. Please check the city name and try again.",
       });
     }
   };
