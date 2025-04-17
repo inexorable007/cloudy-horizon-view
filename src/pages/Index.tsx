@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import SearchBar from "@/components/SearchBar";
 import WeatherCard from "@/components/WeatherCard";
@@ -10,9 +11,11 @@ import { getWeatherData, WeatherData } from "@/utils/weatherApi";
 
 const Index = () => {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
   const handleSearch = async (query: string) => {
+    setIsLoading(true);
     try {
       const data = await getWeatherData(query);
       setWeatherData(data);
@@ -21,11 +24,14 @@ const Index = () => {
         description: `Weather information for ${query}`,
       });
     } catch (error) {
+      console.error("Search error:", error);
       toast({
         variant: "destructive",
         title: "Error",
         description: "Failed to fetch weather data. Please check the city name and try again.",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -47,7 +53,16 @@ const Index = () => {
         <Clock />
         <SearchBar onSearch={handleSearch} />
 
-        {weatherData && (
+        {isLoading && (
+          <div className="flex justify-center my-8">
+            <div className="text-white text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white mx-auto mb-2"></div>
+              <p>Loading weather data...</p>
+            </div>
+          </div>
+        )}
+
+        {!isLoading && weatherData && (
           <div className="space-y-6">
             <div className="flex justify-center">
               <WeatherCard
