@@ -4,6 +4,8 @@ import SearchBar from "@/components/SearchBar";
 import WeatherCard from "@/components/WeatherCard";
 import WeatherDetails from "@/components/WeatherDetails";
 import Forecast from "@/components/Forecast";
+import Clock from "@/components/Clock";
+import { Globe } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 
 const Index = () => {
@@ -46,15 +48,21 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen p-4 md:p-8" 
+    <div className="min-h-screen p-4 md:p-8 relative overflow-hidden" 
          style={{
            background: "linear-gradient(to bottom right, #4A90E2, #87CEEB)"
          }}>
-      <div className="max-w-4xl mx-auto space-y-8">
+      {/* Background Globe Icon */}
+      <div className="absolute right-0 top-1/2 transform -translate-y-1/2 opacity-5 pointer-events-none">
+        <Globe className="w-96 h-96" />
+      </div>
+      
+      <div className="max-w-4xl mx-auto space-y-8 relative z-10">
         <h1 className="text-3xl font-bold text-center text-white mb-8">
           Weather Dashboard
         </h1>
         
+        <Clock />
         <SearchBar onSearch={handleSearch} />
 
         {weatherData && (
